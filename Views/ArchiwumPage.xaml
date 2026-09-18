@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:ClassroomTablets.Models"
+             x:Class="ClassroomTablets.Views.ArchiwumPage"
+             BackgroundColor="#FBEAD9"
+             Title="Archiwum">
+
+    <Grid RowDefinitions="Auto,Auto,Auto,*,Auto" Padding="16" RowSpacing="12">
+
+     
+        <Frame Grid.Row="0"
+               BackgroundColor="#5B6A9C"
+               CornerRadius="16"
+               Padding="16"
+               HasShadow="False">
+            <VerticalStackLayout>
+                <Label Text="Archiwum" FontSize="20" FontAttributes="Bold" TextColor="White" />
+                <Label Text="Monitorowanie i zarządzanie" FontSize="12" TextColor="#DCE1F0" />
+            </VerticalStackLayout>
+        </Frame>
+
+       
+        <Frame Grid.Row="1" BackgroundColor="#EAF0FB" CornerRadius="14" Padding="12" HasShadow="False">
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                <VerticalStackLayout Grid.Column="0" Spacing="2">
+                    <Label Text="Klasa" FontSize="11" TextColor="#5B6A9C" />
+                    <Picker x:Name="FiltrKlasaPicker" SelectedIndexChanged="OnFiltrZmieniony" />
+                </VerticalStackLayout>
+                <VerticalStackLayout Grid.Column="1" Spacing="2">
+                    <Label Text="Uczeń" FontSize="11" TextColor="#5B6A9C" />
+                    <Picker x:Name="FiltrUczenPicker" SelectedIndexChanged="OnFiltrZmieniony" />
+                </VerticalStackLayout>
+            </Grid>
+        </Frame>
+
+
+        <SearchBar Grid.Row="2" x:Name="WyszukiwarkaSearchBar"
+                   Placeholder="Szukaj po uczniu lub numerze tabletu (np. T-001)"
+                   TextChanged="OnWyszukiwarkaTextChanged" />
+
+    
+        <RefreshView Grid.Row="3" x:Name="OdswiezanieView" Refreshing="OnOdswiezanieRefreshing">
+            <CollectionView x:Name="ArchiwumCollectionView"
+                             SelectionMode="Single"
+                             SelectionChanged="OnLekcjaWybrana"
+                             EmptyView="Brak zapisanych lekcji spełniających wybrane filtry.">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:GrupaArchiwum">
+                        <Frame BackgroundColor="White" CornerRadius="12" Padding="14" Margin="0,0,0,10" HasShadow="False">
+                            <VerticalStackLayout Spacing="4">
+                                <Label Text="{Binding Naglowek}" FontAttributes="Bold" FontSize="14" TextColor="#2E3A59" />
+                                <CollectionView ItemsSource="{Binding Sesje}">
+                                    <CollectionView.ItemTemplate>
+                                        <DataTemplate x:DataType="models:ArchiwalnaSesja">
+                                            <Label FontSize="13" TextColor="#4B5563" Margin="0,2,0,0">
+                                                <Label.FormattedText>
+                                                    <FormattedString>
+                                                        <Span Text="{Binding StudentName}" FontAttributes="Bold" />
+                                                        <Span Text=" — " />
+                                                        <Span Text="{Binding DeviceId}" />
+                                                        <Span Text="{Binding ClassName, StringFormat=' ({0})'}" />
+                                                        <Span Text="&#10;      Połączono: " />
+                                                        <Span Text="{Binding DataPolaczenia, StringFormat='{0:HH:mm}'}" FontAttributes="Bold" />
+                                                        <Span Text="   Rozłączono: " />
+                                                        <Span Text="{Binding DataRozlaczenia, StringFormat='{0:HH:mm}'}" FontAttributes="Bold" />
+                                                    </FormattedString>
+                                                </Label.FormattedText>
+                                            </Label>
+                                        </DataTemplate>
+                                    </CollectionView.ItemTemplate>
+                                </CollectionView>
+                                <Label Text="Dotknij, aby zobaczyć pełne szczegóły →"
+                                       FontSize="11" TextColor="#8A8F9C" Margin="0,4,0,0" />
+                            </VerticalStackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </RefreshView>
+
+     
+        <Grid Grid.Row="4" ColumnDefinitions="*,Auto">
+            <Button Grid.Column="0"
+                    Text="Usuń archiwum"
+                    Clicked="OnUsunArchiwumClicked"
+                    BackgroundColor="Transparent"
+                    TextColor="#D64550"
+                    BorderColor="#D64550"
+                    BorderWidth="1"
+                    CornerRadius="12"
+                    HeightRequest="48"
+                    HorizontalOptions="Start"
+                    WidthRequest="160" />
+        </Grid>
+    </Grid>
+
+</ContentPage>
