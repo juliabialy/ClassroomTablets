@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:zxing="clr-namespace:ZXing.Net.Maui.Controls;assembly=ZXing.Net.MAUI.Controls"
+             x:Class="ClassroomTablets.Views.SkanerQR"
+             Title="Skanuj tablet"
+             BackgroundColor="Black">
+
+    <Grid RowDefinitions="*,Auto">
+
+
+        <zxing:CameraBarcodeReaderView
+            x:Name="BarcodeReader"
+            Grid.Row="0"
+            BarcodesDetected="OnBarcodesDetected" />
+
+     
+        <Border Grid.Row="0"
+                Stroke="#5B6A9C"
+                StrokeThickness="4"
+                WidthRequest="240"
+                HeightRequest="240"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                StrokeShape="RoundRectangle 20"
+                InputTransparent="True" />
+
+        <Label Grid.Row="0"
+               Text="Skieruj aparat na kod QR na tapecie tabletu"
+               TextColor="White"
+               FontSize="15"
+               HorizontalTextAlignment="Center"
+               VerticalOptions="End"
+               Margin="24,0,24,140" />
+
+    
+        <VerticalStackLayout Grid.Row="1" Padding="16" Spacing="10" BackgroundColor="#1C1C1E">
+
+            <Label x:Name="StatusLabel"
+                   Text="Oczekiwanie na kod QR..."
+                   TextColor="#CFCFCF"
+                   FontSize="13"
+                   HorizontalTextAlignment="Center" />
+
+            <Button Text="Anuluj"
+                    Clicked="OnAnulujClicked"
+                    BackgroundColor="#5B6A9C"
+                    TextColor="White"
+                    CornerRadius="14"
+                    HeightRequest="50" />
+        </VerticalStackLayout>
+    </Grid>
+
+</ContentPage>
