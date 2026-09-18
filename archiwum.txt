@@ -1,0 +1,28 @@
+    <VerticalStackLayout Padding="20" Spacing="15">
+        <Label Text="Archwium"
+               FontSize="22"
+               FontAttributes="Bold"
+               HorizontalOptions="Center" />
+
+        <CollectionView x:Name="ArchiwumCollectionView"
+                        HeightRequest="450">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Margin="0,5" Padding="15" CornerRadius="8" HasShadow="True">
+                        <VerticalStackLayout Spacing="5">
+                            <Label Text="{Binding NazwaGrupy}" FontAttributes="Bold" FontSize="16" />
+                            <HorizontalStackLayout Spacing="10">
+                                <Label Text="{Binding Klasa, StringFormat='Klasa: {0}'}" FontSize="13" TextColor="DarkSlateGray"/>
+                                <Label Text="{Binding DataArchiwizacji, StringFormat='Data: {0:dd.MM.yyyy HH:mm}'}" FontSize="13" TextColor="Gray"/>
+                            </HorizontalStackLayout>
+                        </VerticalStackLayout>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <Button Text="Powrót"
+                BackgroundColor="#707FA6"
+                TextColor="White"
+                CornerRadius="8" />
+    </VerticalStackLayout>
