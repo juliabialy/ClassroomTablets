@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:ClassroomTablets.Models"
+             x:Class="ClassroomTablets.Views.MainPage"
+             BackgroundColor="#FBEAD9"
+             Title="Tablety w klasie">
+
+    <Grid RowDefinitions="Auto,*" Padding="16" RowSpacing="12">
+
+
+        <Frame Grid.Row="0"
+               BackgroundColor="#5B6A9C"
+               CornerRadius="16"
+               Padding="16"
+               HasShadow="False">
+            <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="*,Auto">
+                <Label Grid.Row="0" Grid.Column="0"
+                       Text="Tablety w klasie"
+                       FontSize="20" FontAttributes="Bold"
+                       TextColor="White" />
+                <Label Grid.Row="1" Grid.Column="0"
+                       Text="Monitorowanie i zarządzanie"
+                       FontSize="12" TextColor="#DCE1F0" />
+                <Label Grid.Row="0" Grid.Column="1" Grid.RowSpan="2"
+                       x:Name="DataGodzinaLabel"
+                       FontSize="14" TextColor="White"
+                       VerticalOptions="Center" HorizontalTextAlignment="End" />
+            </Grid>
+        </Frame>
+
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Spacing="16">
+
+
+                <Frame BackgroundColor="#EAF0FB" CornerRadius="14" Padding="14" HasShadow="False">
+                    <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8">
+                        <VerticalStackLayout Grid.Column="0" Spacing="2">
+                            <VerticalStackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnNauczycielTapped" />
+                            </VerticalStackLayout.GestureRecognizers>
+                            <Label Text="Nauczyciel" FontSize="11" TextColor="#5B6A9C" />
+                            <Label x:Name="NauczycielLabel" FontSize="14" FontAttributes="Bold" TextColor="#2E3A59" />
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Grid.Column="1" Spacing="2">
+                            <VerticalStackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnSalaTapped" />
+                            </VerticalStackLayout.GestureRecognizers>
+                            <Label Text="Sala" FontSize="11" TextColor="#5B6A9C" />
+                            <Label x:Name="SalaLabel" FontSize="14" FontAttributes="Bold" TextColor="#2E3A59" />
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Grid.Column="2" Spacing="2">
+                            <VerticalStackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnKlasaTapped" />
+                            </VerticalStackLayout.GestureRecognizers>
+                            <Label Text="Klasa" FontSize="11" TextColor="#5B6A9C" />
+                            <Label x:Name="KlasaLabel" FontSize="14" FontAttributes="Bold" TextColor="#2E3A59" />
+                        </VerticalStackLayout>
+                    </Grid>
+                </Frame>
+                <Label Text="Dotknij pojedynczego pola (Nauczyciel / Sala / Klasa), aby zmienić tylko je"
+                       FontSize="11" TextColor="#8A8F9C" Margin="4,-10,0,0" />
+
+
+                <Button Text="⛶  Skanuj tablet"
+                        Clicked="OnSkanujTabletClicked"
+                        BackgroundColor="#5B6A9C"
+                        TextColor="White"
+                        FontSize="17"
+                        FontAttributes="Bold"
+                        CornerRadius="14"
+                        HeightRequest="54" />
+
+                <Label Text="Podłączone tablety:" FontSize="16" FontAttributes="Bold" TextColor="#2E3A59" />
+
+                <CollectionView x:Name="TabletyCollectionView"
+                                ItemsSource="{Binding Tablety}"
+                                EmptyView="Brak podłączonych tabletów. Zeskanuj kod QR, aby dodać urządzenie.">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:DeviceSession">
+                            <Frame BackgroundColor="#F3F3F3" CornerRadius="12" Padding="12" Margin="0,0,0,10" HasShadow="False">
+                                <Grid ColumnDefinitions="30,60,*,90,90" ColumnSpacing="6" RowDefinitions="Auto,Auto" VerticalOptions="Center">
+
+                                    <Label Grid.Column="0" Grid.RowSpan="2"
+                                           Text="{Binding Number}"
+                                           VerticalOptions="Center"
+                                           FontAttributes="Bold" TextColor="#2E3A59" />
+
+                                    <Label Grid.Column="1" Grid.RowSpan="2"
+                                           Text="{Binding DeviceId}"
+                                           VerticalOptions="Center"
+                                           FontAttributes="Bold" TextColor="#2E3A59" />
+
+
+                                    <Picker Grid.Column="2" Grid.Row="0"
+                                            Title="Wybierz ucznia"
+                                            ItemsSource="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=DostepniUczniowie}"
+                                            SelectedItem="{Binding StudentName, Mode=TwoWay}"
+                                            SelectedIndexChanged="OnUczenWybranyChanged" />
+
+                                    <Label Grid.Column="2" Grid.Row="1"
+                                           Text="{Binding ConnectedAtDisplay}"
+                                           FontSize="11" TextColor="#6B7280" />
+
+                                    <Button Grid.Column="3" Grid.Row="0"
+                                            Text="{Binding PauseButtonText}"
+                                            BackgroundColor="#5B6A9C" TextColor="White"
+                                            FontSize="12" CornerRadius="8" HeightRequest="36"
+                                            Padding="4,0"
+                                            Clicked="OnPauzaClicked" />
+
+                                    <Button Grid.Column="4" Grid.Row="0"
+                                            Text="✕ Rozłącz"
+                                            BackgroundColor="#FDEDEE" TextColor="#D64550"
+                                            FontSize="12" CornerRadius="8" HeightRequest="36"
+                                            Padding="4,0"
+                                            Clicked="OnRozlaczClicked" />
+                                </Grid>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="10" Margin="0,4,0,16">
+                    <Button Grid.Column="0"
+                            Text="Rozłącz wszystkie"
+                            Clicked="OnRozlaczWszystkieClicked"
+                            BackgroundColor="#5B6A9C"
+                            TextColor="White"
+                            CornerRadius="14"
+                            HeightRequest="50" />
+                    <Button Grid.Column="1"
+                            Text="Archiwum"
+                            Clicked="OnArchiwumClicked"
+                            BackgroundColor="Transparent"
+                            TextColor="#5B6A9C"
+                            BorderColor="#5B6A9C"
+                            BorderWidth="1"
+                            CornerRadius="14"
+                            HeightRequest="50" />
+                </Grid>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+
+</ContentPage>
